@@ -15,8 +15,8 @@ jobs:
       - name: Checking the version of Ruby
         run: ruby -v
       # Add or replace database setup steps here
-      - name: Installing Rails
-        run: gem install rails
+      # - name: Installing Rails
+      #   run: gem install rails
       # Add or replace test runners here
       - name: Running bundle install
         run: bundle install
