@@ -5,54 +5,28 @@
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters.
 name: "Ruby on Rails CI"
+
 on:
   push:
-    branches: [ "main" ]
+    branches:
+        - develop
   pull_request:
     branches: [ "main" ]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:11-alpine
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: rails_test
-          POSTGRES_USER: rails
-          POSTGRES_PASSWORD: password
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      # Add or replace dependency steps here
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
-        with:
-          bundler-cache: true
-      # Add or replace database setup steps here
-      - name: Set up database schema
-        run: bin/rails db:schema:load
-      # Add or replace test runners here
-      - name: Run tests
-        run: bin/rake
 
-  lint:
+jobs:
+  first_qa_job:
     runs-on: ubuntu-latest
+    environment: staging
+    env:
+      POSTS: https://jsonplaceholder.typicode.com/posts
+      COMMENTS: https://jsonplaceholder.typicode.com/comments
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
-        with:
-          bundler-cache: true
-      # Add or replace any other lints here
-      - name: Security audit dependencies
-        run: bin/bundler-audit --update
-      - name: Security audit application code
-        run: bin/brakeman -q -w2
-      - name: Lint Ruby files
-        run: bin/rubocop --parallel
+      # Add or replace database setup steps here
+      - name: Checking the version of Ruby
+        run: ruby -v
+      # Add or replace database setup steps here
+      - name: Installing Rails
+        run: gem install rails
+      # Add or replace test runners here
+      - name: Running bundle install
+        run: bundle install
