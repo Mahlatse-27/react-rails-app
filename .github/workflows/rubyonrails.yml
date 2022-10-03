@@ -18,8 +18,8 @@ jobs:
       # - name: Installing Rails
       #   run: gem install rails
       # Add or replace test runners here
-      - name: Running bundle install
-        run: bundle install
+      # - name: Running bundle install
+      #   run: bundle install
 
 
   test:
